@@ -1,0 +1,13 @@
+import mensajeria.*
+
+
+test "test-paquete-precio"{
+
+    assert.equals(500, paquete.precio(matrix))
+}
+
+test "test-paquete-pago"{
+    assert.notThat(paquete.estaPago())
+    paquete.pagarPaquete()
+    assert.that(paquete.estaPago())
+}
