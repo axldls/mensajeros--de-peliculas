@@ -40,7 +40,7 @@ object paquete {
         return contenido
     }
     method precio(destino){
-        return destino.precio()
+        return destino.precio() + 50
     }
     method pagarPaquete(){
         pagado = true
@@ -186,5 +186,32 @@ object paquetito {
 
 object paquetonViajero {
 
-    
+    const destinos = #{}
+
+    const totalAPagar = self.precio()
+
+    var pagadoHastaAhora = 0
+
+    method pagadoHastaAhora(){
+        return pagadoHastaAhora
+    }
+
+    method pagar(monto){
+        pagadoHastaAhora =+ monto
+    }
+
+    method totalAPagar(){
+        return totalAPagar
+    }
+    method precio(){
+        return 100 * destinos.size()
+    }
+
+    method estaPago(){
+        return pagadoHastaAhora == totalAPagar
+    }
+
+    method mensajeroPuedeIrATodosLosDestinos(mensajero){
+        destinos.all{destino => destino.puedeEntrar(mensajero)}
+    }
 }
