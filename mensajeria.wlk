@@ -14,7 +14,7 @@ object matrix {
 
 object brooklynPuente {
     method puedeEntrar(mensajero){
-        return mensajero.peso() < 1000
+        return mensajero.peso() < 1000 
     }
     method precio(){
         return 150
@@ -47,6 +47,9 @@ object paquete {
     }
     method estaPago(){
         return pagado
+    }
+    method noEstaPago(){
+        pagado = false
     }
 }
 
@@ -111,4 +114,77 @@ object camion{
     method pesoCamionYAcoplados(){
         return 1000
     }
+}
+
+object empleados {
+
+
+    const empleados = [mensajeria.jeanGray, mensajeria.saraConnor, mensajeria.neo]
+
+    method empleados(){
+        return empleados
+    }
+
+    method agregarEmpleadoAMensajeria(empleado){
+        empleados.add(empleado)
+    }
+
+    method despedirEmpleado(empleado){
+        empleados.remove(empleado)
+    }
+
+    method DespedirATodos(){
+        empleados.clear()
+    }
+
+
+    method laMensajeriaEsGrande(mensajeria){
+        return mensajeria.size() > 2
+    }
+
+
+    method elPaquetePuedeSerEntregadoPorElPrimero(destino, listaEmpleados){
+        paquete.puedeEntregarse(destino, listaEmpleados.first())
+    }
+
+    method pesoDeUltimoMensajero(listaEmpleados){
+        self.ultimoEmpleado(listaEmpleados).peso()
+    }
+    method ultimoEmpleado(listaEmpleados){
+        return listaEmpleados.last()
+    }
+}
+
+
+object empleado{
+    const peso = 70
+
+    method peso(){
+        return peso
+    }
+
+    method puedeLlamar(){
+        return true
+    }
+}
+
+
+
+object paquetito {
+
+    method precio(){
+        return 0
+    }
+    method estaPago(){
+        return true
+    }
+
+    method puedeEntregarse(destino, mensajero){
+        return true
+    }
+}
+
+object paquetonViajero {
+
+    
 }

@@ -11,3 +11,65 @@ test "test-paquete-pago"{
     paquete.pagarPaquete()
     assert.that(paquete.estaPago())
 }
+
+test "test-paqueteDeGeorgeNoEstaPago"{
+    paquete.noEstaPago()
+    assert.notThat(paquete.puedeEntregarse(matrix, neo))
+}
+
+test "test-paqueteDeGeorgeSiEstaPago"{
+    paquete.pagarPaquete()
+    assert.that(paquete.puedeEntregarse(matrix, jeanGray))
+}
+
+test "test3-paqueteDeGeorgeEstaPago"{
+
+    paquete.pagarPaquete()
+    saraConnor.pesoSara(70)
+    saraConnor.vehiculo(camion.pesoCamionYAcoplados())
+    assert.notThat(paquete.puedeEntregarse(brooklynPuente, saraConnor))
+}
+
+
+test "test4-paqueteEstaPagoSaraUsaMoto"{
+    paquete.pagarPaquete()
+    saraConnor.pesoSara(70)
+    saraConnor.vehiculo(moto.peso())
+    assert.that(paquete.puedeEntregarse(brooklynPuente, saraConnor))
+}
+
+
+
+//SEGUNDA PARTE
+test "test-mensajeroContratado"{
+
+    empleados.agregarEmpleadoAMensajeria(empleado)
+    assert.that(empleados.empleados().contains(empleado))
+}
+
+test "test-empleadoDespedido"{
+
+    empleados.despedirEmpleado(neo)
+    assert.notThat(empleados.empleados().contains(neo))
+}
+
+test "test-todosDespedidos"{
+
+    empleados.DespedirATodos()
+    assert.that(empleados.empleados() == #{})
+}
+
+test "test-mensajeriaEsGrande"{
+
+    assert.that(empleados.laMensajeriaEsGrande(empleados.empleados()))
+}
+
+test "test-elPaquetePuedeSerEntregadoPorElPrimero"{
+    paquete.pagarPaquete()
+    assert.that(paquete.puedeEntregarse(brooklynPuente, empleados.empleados().first()))
+}
+
+test "test-pesoDelUltimo"{
+
+    assert.that(empleados.ultimoEmpleado(empleados.empleados()).peso() >= 0)
+}
