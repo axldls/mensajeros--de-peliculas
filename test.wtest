@@ -73,3 +73,46 @@ test "test-pesoDelUltimo"{
 
     assert.that(empleados.ultimoEmpleado(empleados.empleados()).peso() >= 0)
 }
+
+//TERCERA PARTE
+
+test "test-almenosUnoPuede"{
+    paquete.pagarPaquete()
+    const mensajeros = [ neo, jeanGray, empleado]
+    assert.that(mensajeros.any{ mensajero => paquete.puedeEntregarse(matrix, mensajero) })
+}
+
+test "test-mensajerosQuePueden"{
+    paquete.pagarPaquete()
+    const mensajeros = [jeanGray, neo, saraConnor, empleado]
+    const posibles = empresaMensajeria.mensajerosQuePuedenLlevarPaquete(mensajeros, paquete, matrix)
+    assert.notThat(posibles.isEmpty())
+}
+test "test-mensajeriaConSobrepeso"{
+    camion.ponerAcoplados()
+    const mensajeros = [saraConnor, neo, jeanGray]
+    assert.notThat(empresaMensajeria.mensajeriaTieneSobrePeso())
+    
+}
+
+test "test-enFacturacion" {
+    paquete.pagarPaquete()
+    const mensajeros = [jeanGray, neo, empleado]
+    empresaMensajeria.enviarPaquete(paquete, mensajeros, matrix)
+
+    assert.that(empresaMensajeria.paquetesEnviados().contains(paquete))
+    assert.notThat(empresaMensajeria.paquetesPendientes().contains(paquete))
+    assert.equals(paquete.precio(matrix), empresaMensajeria.facturacion())
+}
+
+test "test-paquetes enviados"{
+    paquete.pagarPaquete()
+    const paquetes = [paquete, paquetito]
+    const mensajeros = [jeanGray, neo, empleado]
+    empresaMensajeria.enviarPaquetes(paquetes, mensajeros, matrix)
+    assert.that(empresaMensajeria.paquetesEnviados().contains(paquete))
+    assert.that(empresaMensajeria.paquetesEnviados().contains(paquetito))
+    assert.notThat(empresaMensajeria.paquetesPendientes().contains(paquete))
+    assert.notThat(empresaMensajeria.paquetesPendientes().contains(paquetito))
+    assert.equals(paquete.precio(matrix) + paquetito.precio(), empresaMensajeria.facturacion())
+}

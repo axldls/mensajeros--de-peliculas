@@ -93,7 +93,7 @@ object saraConnor {
         return vehiculo
     }
     method peso(){
-        return pesoSara + vehiculo
+        return pesoSara + vehiculo.peso()
     }
     method puedeLlamar(){
         return false
@@ -108,11 +108,20 @@ object moto {
 
 object camion{
 
+    var acoplados = false
+
+    method ponerAcoplados(){
+        acoplados = true
+    }
+
     method pesoCamion(){
         return 500
     }
     method pesoCamionYAcoplados(){
         return 1000
+    }
+    method peso(){
+        return if (acoplados){self.pesoCamionYAcoplados()} else {self.pesoCamion()}
     }
 }
 
@@ -153,6 +162,8 @@ object empleados {
     method ultimoEmpleado(listaEmpleados){
         return listaEmpleados.last()
     }
+
+
 }
 
 
@@ -172,6 +183,10 @@ object empleado{
 
 object paquetito {
 
+
+    method precio(destino){
+        return 0
+    }
     method precio(){
         return 0
     }
@@ -186,12 +201,16 @@ object paquetito {
 
 object paquetonViajero {
 
-    const destinos = #{}
+    var property destinos = #{}
 
     const totalAPagar = self.precio()
 
     var pagadoHastaAhora = 0
 
+
+    method agregarDestino(destino){
+        destinos.add(destino)
+    }
     method pagadoHastaAhora(){
         return pagadoHastaAhora
     }
@@ -212,6 +231,108 @@ object paquetonViajero {
     }
 
     method mensajeroPuedeIrATodosLosDestinos(mensajero){
-        destinos.all{destino => destino.puedeEntrar(mensajero)}
+        return destinos.all{destino => destino.puedeEntrar(mensajero)}
+        
+    }
+
+    method puedeEntregarse(mensajero){
+        return self.estaPago() && self.mensajeroPuedeIrATodosLosDestinos(mensajero)
     }
 }
+
+
+
+object empresaMensajeria {
+
+    var pesoMensajeria = 0
+    const paquetesEnviados = #{}
+    const paquetesPendientes = #{}
+    var facturacion = 0
+    const destinos = #{}
+    var pagadoHastaAhora = 0
+
+
+    method paquetesEnviados(){ 
+        return paquetesEnviados
+    }
+
+    method mensajerosQuePuedenLlevarPaquete(mensajeros, paquete, destino){
+        return mensajeros.filter{ mensajero => paquete.puedeEntregarse(destino, mensajero) }
+    }
+
+    method paquetesPendientes(){
+        return paquetesPendientes
+    }
+
+    method facturacion(){
+        return facturacion
+    }
+
+    method destinos(){
+        return destinos
+    }
+
+
+    method pagadoHastaAhora(){
+        return pagadoHastaAhora
+    }
+
+
+
+    method mensajeriaPeso(mensajeros){
+        pesoMensajeria = mensajeros.average{ mensajero => mensajero.peso() }
+    }
+    method pesoMensajeria(){
+        return pesoMensajeria
+    }
+
+
+
+    method mensajeriaTieneSobrePeso(){
+        return self.pesoMensajeria() > 500
+    }
+
+    method pagar(monto){
+        pagadoHastaAhora += monto
+    }
+    method totalAPagar(){
+        return self.precio()
+    }
+    method precio(){
+        return 100 * destinos.size()
+    }
+    method estaPago(){
+        return pagadoHastaAhora == self.totalAPagar()
+    }
+
+    method posibleMensajero(mensajeros, paquete, destino){
+        return mensajeros.find{ mensajero => paquete.puedeEntregarse(destino, mensajero) }
+    }
+
+    method enviarPaquete(paqueteAEnviar, mensajeros, destino){
+        if (mensajeros.any{ mensajero => paqueteAEnviar.puedeEntregarse(destino, mensajero) }){
+            paquetesEnviados.add(paqueteAEnviar)
+            paquetesPendientes.remove(paqueteAEnviar)
+            facturacion += paqueteAEnviar.precio(destino)
+        } else {
+            paquetesPendientes.add(paqueteAEnviar)
+        }
+    }
+
+    method enviarPaquetes(paquetes, mensajeros, destino){
+        paquetes.forEach{ paquete => self.enviarPaquete(paquete, mensajeros, destino) }
+    }
+
+    method preciosDePaquetes(paquetes){
+        return paquetes.map{ paquete => paquete.precio() }
+    }
+
+    method paqueteMasCaro(precios){
+        return precios.max()
+    }
+}
+
+
+
+
+
